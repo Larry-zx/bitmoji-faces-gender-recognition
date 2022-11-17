@@ -157,6 +157,7 @@ class Classifier_Trainer(object):
 
 
 trainer = Classifier_Trainer()
-# trainer.start()
-path = "checkpoints/convnext_base/0.9997.pth"
-trainer.test(model_path=path)
+trainer.start()
+
+# path = None
+# trainer.test(model_path=path)
