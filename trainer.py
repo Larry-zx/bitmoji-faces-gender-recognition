@@ -12,14 +12,15 @@ import pandas as pd
 torch.manual_seed(3407)
 from dataLoder import dataloder
 from mdoel.convnext import convnext_base_one, convnext_small_one, convnext_tiny_one
+from mdoel.networks import classifer
 from utils import timeSince, create_dir
 
 """超参数部分"""
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--bs', default=32, type=int, help='在train集上的batchSize')
 parser.add_argument('--lr', default=1e-4, type=float, help='')
-parser.add_argument('--gpu', default=2, type=float, help='')
-parser.add_argument('--model', default="convnext_base", type=str, help='')
+parser.add_argument('--gpu', default=0, type=float, help='')
+parser.add_argument('--model', default="convnext_base", type=str, help='resnet18 | mobilenet_v2 | resnet50 | convnext_base | regnet_x_400mf | convnext_tiny |')
 parser.add_argument('--scheduler', default="linear")
 opt = parser.parse_args()
 
@@ -48,6 +49,8 @@ class Classifier_Trainer(object):
             model = convnext_tiny_one(pretrained=True, in_22k=True, num_classes=2)
         elif model_type == "convnext_small":
             model = convnext_small_one(pretrained=True, in_22k=True, num_classes=2)
+        else:
+            model = classifer(model_type)
         model = model.to(self.device)
         return model
 
@@ -159,5 +162,6 @@ class Classifier_Trainer(object):
 trainer = Classifier_Trainer()
 trainer.start()
 
+# 在测试集上测试
 # path = None
 # trainer.test(model_path=path)
